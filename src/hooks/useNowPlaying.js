@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { API_OPTIONS, GET_NOW_PLAYING } from "../utils/constants";
+import { API_OPTIONS, GET_MOVIES_List } from "../utils/constants";
 import { addNowPlaying } from "../utils/moviesSlice";
 import { useDispatch,useSelector } from "react-redux";
 
@@ -8,8 +8,10 @@ const useNowPlaying = () => {
   const nowPlaying = useSelector(store => store.nowPlaying);
   const getNowPlayingMovies = async () => {
    try{
-    const data = await fetch(GET_NOW_PLAYING, API_OPTIONS);
+    const movie = GET_MOVIES_List.replace("{type}", "now_playing");
+    const data = await fetch(movie, API_OPTIONS);
     const json = await data.json();
+    // console.log(json)
     dispath(addNowPlaying(json.results));
    }
    catch(e){

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { API_OPTIONS, GET_POPULAR_MOVIES } from "../utils/constants";
+import { API_OPTIONS, GET_MOVIES_List } from "../utils/constants";
 import { popularMovies } from "../utils/moviesSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +9,8 @@ const usePopularMovies = () => {
 
   const getPopularMovies = async () => {
    try{
-    const data = await fetch(GET_POPULAR_MOVIES, API_OPTIONS);
+    const movie = GET_MOVIES_List.replace("{type}", "popular");
+    const data = await fetch(movie, API_OPTIONS);
     const json = await data.json();
     dispath(popularMovies(json.results));
    }

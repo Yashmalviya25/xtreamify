@@ -2,6 +2,13 @@
 import React from "react";
 import Header from "./Header";
 import useLogin from "../hooks/useLogin";
+import { useEffect } from "react";
+import { addUser, removeUser } from "../utils/userSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   const {
@@ -13,6 +20,23 @@ const Login = () => {
     toggleSignInForm,
     handleAuthentication,
   } = useLogin();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName } = user;
+        dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch, navigate]);
+
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-[url('/src/public/images/bg.jpg')] flex justify-center items-center">

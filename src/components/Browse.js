@@ -5,13 +5,27 @@ import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import GptSearch from "./GptSearch";
 import { useSelector } from "react-redux";
+import useTopRated from "../hooks/useTopRated";
+import useUpcomming from "../hooks/useUpcomming";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Browse = () => {
   const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
   useNowPlaying();
   usePopularMovies();
+  useTopRated();
+  useUpcomming();
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
-  return (
+  useEffect(()=>{
+    if(!user){
+      navigate("/");
+    }
+  },[user])
+
+  return  (
     <div>
       <Header />
       {showGptSearch ? (

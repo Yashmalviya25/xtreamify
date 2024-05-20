@@ -1,26 +1,16 @@
 import Login from "./Login";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Browse from "./Browse";
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import MovieDetails from "./MovieDetails";
 const Body = () => {
-
-  const appRouter = createBrowserRouter([
-    {
-      path: "/",
-      element: <Login />,
-    },
-    {
-      path: "/browse",
-      element: <Browse />,
-    },
-  ]);
-
   return (
-    <div>
-      <RouterProvider router={appRouter} />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/browse" element={<Browse />} />
+        <Route path="/movie/:movieId" element={<MovieDetails />} />
+      </Routes>
+    </Router>
   );
 };
 
